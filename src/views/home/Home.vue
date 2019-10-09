@@ -15,18 +15,46 @@
       </el-carousel-item>
     </el-carousel>
     <div id="menu">
-      <table cellpadding="0" cellspacing="0" border="1">
-        <tr>
-          <td width="25%"></td>
-          <td width="25%"></td>
-          <td width="25%"></td>
-          <td width="25%"></td>
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr style="height: 30%">
+          <td width="23%" style="padding-top: 10px">
+            <el-avatar shape="circle" size="50" fit="fill" :src="menuImg.url1"></el-avatar>
+          </td>
+          <td width="23%" style="padding-top: 10px">
+            <el-avatar shape="circle" size="50" fit="fill" :src="menuImg.url2"></el-avatar>
+          </td>
+          <td width="23%" style="padding-top: 10px">
+            <el-avatar shape="circle" size="50" fit="fill" :src="menuImg.url3"></el-avatar>
+          </td>
+          <td width="23%" style="padding-top: 10px">
+            <el-avatar shape="circle" size="50" fit="fill" :src="menuImg.url4"></el-avatar>
+          </td>
         </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr style="height: 20%">
+          <td style="padding-bottom: 5px"><span>热带水果</span></td>
+          <td style="padding-bottom: 5px"><span>苹果梨桃</span></td>
+          <td style="padding-bottom: 5px"><span>橙橘柑柚</span></td>
+          <td style="padding-bottom: 5px"><span>石榴</span></td>
+        </tr>
+        <tr style="height: 30%">
+          <td width="25%" style="padding-top: 10px">
+            <el-avatar shape="circle" size="50" fit="fill" :src="menuImg.url5"></el-avatar>
+          </td>
+          <td width="25%" style="padding-top: 10px">
+            <el-avatar shape="circle" size="50" fit="fill" :src="menuImg.url7"></el-avatar>
+          </td>
+          <td width="25%" style="padding-top: 10px">
+            <el-avatar shape="circle" size="50" fit="fill" :src="menuImg.url8"></el-avatar>
+          </td>
+          <td width="25%" style="padding-top: 10px">
+            <el-avatar shape="circle" size="50" fit="fill" :src="menuImg.url6"></el-avatar>
+          </td>
+        </tr>
+        <tr style="height: 20%">
+          <td style="padding-bottom: 5px"><span>柚子</span></td>
+          <td style="padding-bottom: 5px"><span>浆果类</span></td>
+          <td style="padding-bottom: 5px"><span>水果礼盒</span></td>
+          <td style="padding-bottom: 5px"><span>更多水果</span></td>
         </tr>
       </table>
     </div>
@@ -34,8 +62,16 @@
 </template>
 
 <script>
-  import img1 from '../../assets/img/category/carousel/carouselImg01.png'
-  import img2 from '../../assets/img/category/carousel/carouselImg02.png'
+  import img1 from '../../assets/img/home/carousel/carouselImg01.png'
+  import img2 from '../../assets/img/home/carousel/carouselImg02.png'
+  import menu1 from '../../assets/img/home/menu/menu1.png'
+  import menu2 from '../../assets/img/home/menu/menu2.png'
+  import menu3 from '../../assets/img/home/menu/menu3.png'
+  import menu4 from '../../assets/img/home/menu/menu4.png'
+  import menu5 from '../../assets/img/home/menu/menu5.png'
+  import menu6 from '../../assets/img/home/menu/menu6.png'
+  import menu7 from '../../assets/img/home/menu/menu7.png'
+  import menu8 from '../../assets/img/home/menu/menu8.png'
   export default {
     name: "Home",
     data() {
@@ -45,7 +81,17 @@
           {img: img2},
           {img: img1},
           {img: img2}
-        ]
+        ],
+        menuImg: {
+          url1: menu1,
+          url2: menu2,
+          url3: menu3,
+          url4: menu4,
+          url5: menu5,
+          url6: menu6,
+          url7: menu7,
+          url8: menu8,
+        }
       }
     }
   }
@@ -133,11 +179,15 @@
   #menu table {
     position: relative;
     top: 4%;
-    left: 0;
-    width: 100%;
+    margin-left: 4%;
+    width: 92%;
     height: 60%;
   }
-  #menu table tr {
-    height: 50%;
+  #menu table td {
+    text-align: center;
+  }
+  #menu table td span {
+    font-size: 12px;
+    color: black;
   }
 </style>

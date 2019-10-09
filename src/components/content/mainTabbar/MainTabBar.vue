@@ -10,7 +10,7 @@
       <i class="el-icon-s-home"></i>
       <p>首页</p>
     </el-menu-item>
-    <el-menu-item index="1">
+    <el-menu-item index="/category">
       <i class="el-icon-menu"></i>
       <p>分类</p>
     </el-menu-item>

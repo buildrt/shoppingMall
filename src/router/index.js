@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Home = () => import('../views/home/Home');
+const Category = () => import('../views/category/Category');
+const FruitSearch = () => import('../views/category/fruitSearch/FruitSearch');
+
 const Profile = () => import('../views/profile/Profile');
 
 const Login = () => import('../views/login/Login');
@@ -10,6 +13,10 @@ const Register = () => import('../views/register/Register');
 Vue.use(Router);
 
 const routes= [
+  {
+    path: '',
+    redirect: './home'
+  },
   {
     path: '/login',
     component: Login,
@@ -28,8 +35,21 @@ const routes= [
     path: '/home',
     component: Home,
     meta: {
-      title: '分类'
+      title: '首页'
     }
+  },
+  {
+    path: '/category',
+    component: Category,
+    meta: {
+      title: '分类'
+    },
+    children: [
+      {
+        path: 'fruitSearch',
+        component: FruitSearch,
+      }
+    ]
   },
   {
     path: '/profile',
@@ -43,6 +63,11 @@ const routes= [
 const router = new Router({
   routes,
   mode: 'history',
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = to.matched[0].meta.title;
+  next();
 });
 
 export default router
