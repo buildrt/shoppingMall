@@ -1,35 +1,35 @@
 <template>
   <div id="fruitSearch">
-    <el-form :model="form" :rules="rules" label-position="left">
+    <el-form id="elform" :model="form" @submit.native.prevent action="#" method="get" :rules="rules" ref="form" label-position="left">
       <el-form-item label="名称" prop="name">
-        <el-input v-model.trim="form.name"></el-input>
+        <el-input name="name" v-model.trim="form.name"></el-input>
       </el-form-item>
       <el-form-item label="产地" prop="locality">
-        <el-input v-model.trim="form.locality"></el-input>
+        <el-input name="locality" v-model.trim="form.locality"></el-input>
       </el-form-item>
       <el-form-item label="最低价" prop="minPrice">
         <el-col :span="16">
-          <el-input v-model.trim="form.minPrice" style="width: 100%;"></el-input>
+          <el-input name="minPrice" v-model.trim="form.minPrice" style="width: 100%;"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="最高价" prop="maxPrice">
         <el-col :span="16">
-          <el-input v-model.trim="form.maxPrice" style="width: 100%;"></el-input>
+          <el-input name="maxPrice" v-model.trim="form.maxPrice" style="width: 100%;"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="起始日" prop="startTime">
         <el-col :span="16">
-          <el-date-picker type="date" id="start" placeholder="开始日期" v-model="form.startTime" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" name="startTime" id="start" placeholder="开始日期" v-model="form.startTime" style="width: 100%;"></el-date-picker>
         </el-col>
       </el-form-item>
       <el-form-item label="结束日" prop="endTime">
         <el-col :span="16">
-          <el-date-picker type="date" id="end" placeholder="结束日期" v-model="form.endTime" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" name="endTime" id="end" placeholder="结束日期" v-model="form.endTime" style="width: 100%;"></el-date-picker>
         </el-col>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">搜索</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" id="search" native-type="submit" @click="submitForm('form')">搜索</el-button>
+        <el-button @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -39,8 +39,21 @@
   export default {
     name: "FruitSearch",
     methods: {
-      onSubmit() {
-
+      submitForm(forName) {
+        const t = this;
+        let elform = document.getElementById('elform');
+        this.$refs[forName].validate((valid) => {
+          if (valid) {
+            alert('submit');
+            elform.submit();
+          }else {
+            console.log('error submit!!');
+            return false
+          }
+        })
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
       }
     },
     data() {
