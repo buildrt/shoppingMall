@@ -1,6 +1,6 @@
 <template>
   <div id="fruitSearch">
-    <el-form id="elform" :model="form" @submit.native.prevent action="#" method="get" :rules="rules" ref="form" label-position="left">
+    <el-form id="elform" :model="form" :rules="rules" ref="form" label-position="left">
       <el-form-item label="名称" prop="name">
         <el-input name="name" v-model.trim="form.name"></el-input>
       </el-form-item>
@@ -28,10 +28,11 @@
         </el-col>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" id="search" native-type="submit" @click="submitForm('form')">搜索</el-button>
-        <el-button @click="resetForm('form')">重置</el-button>
+        <el-button type="primary" id="search" @click="submitForm('form')">搜索</el-button>
+        <el-button id="reset" @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-button type="primary" id="fruitData" @click="ToFruitInfoAdmin">查看所有</el-button>
   </div>
 </template>
 
@@ -40,20 +41,19 @@
     name: "FruitSearch",
     methods: {
       submitForm(forName) {
-        const t = this;
-        let elform = document.getElementById('elform');
         this.$refs[forName].validate((valid) => {
-          if (valid) {
-            alert('submit');
-            elform.submit();
+          if(valid) {
+            console.log('success');
           }else {
-            console.log('error submit!!');
-            return false
+            console.log('23333')
           }
         })
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+      ToFruitInfoAdmin() {
+        this.$router.push('/fruitInfoAdmin');
       }
     },
     data() {
@@ -72,9 +72,17 @@
           callback();
         }
       };
+      let checkPrice2 = (rule, value, callback) => {
+        if (value <= this.form.minPrice) {
+          callback(new Error('最高价需大于最低价'));
+        }else {
+          callback();
+        }
+      };
       return {
+        isShow: true,
         form: {
-          name: '',
+          fruitName: '',
           locality: '',
           minPrice: '',
           maxPrice: '',
@@ -92,7 +100,7 @@
 
           ],
           maxPrice: [
-
+            {validator: checkPrice2, trigger: 'blur'}
           ],
           startTime: [
 
@@ -102,7 +110,7 @@
           ]
         }
       }
-    }
+    },
   }
 </script>
 
@@ -124,5 +132,20 @@
   }
   .el-button {
     width: 60px;
+    text-align: center;
+  }
+  #search {
+    position: absolute;
+    left: 10%;
+  }
+  #reset {
+    position: absolute;
+    right: 10%;
+  }
+  #fruitData {
+    position: absolute;
+    bottom: 25%;
+    width: auto;
+    left: 16%;
   }
 </style>

@@ -2,18 +2,18 @@
   <div id="profile">
     <div id="title">
       <el-button id="back" circle icon="el-icon-arrow-left"></el-button>
-      <p>{{titleStatus}}</p>
-      <i id="more" class="el-icon-more"></i>
+      <p>{{$store.state.titleStatus}}</p>
+      <i id="more" @click="logOut" class="el-icon-more"></i>
     </div>
     <div id="info">
       <el-avatar id="avatar" :size="58" :src="circleUrl"></el-avatar>
       <div id="text">
-        <p id="nickname" v-if="isLogin">昵称：</p>
-        <p id="username" v-if="isLogin">用户名：</p>
-        <div id="role" v-if="isLogin">用户角色</div>
+        <p id="nickname" v-if="$store.state.isLogin">昵称：{{$store.state.loginClientName}}</p>
+        <p id="username" v-if="$store.state.isLogin">用户名：{{$store.state.loginName}}</p>
+        <div id="role" v-if="$store.state.isLogin">{{role}}</div>
 
-        <router-link v-if="!isLogin" to="/login" id="login_register" style="color: white; margin-top: 10px">登录/注册</router-link>
-        <div style="color: white; margin-top: 10px" v-if="!isLogin">
+        <router-link v-if="!$store.state.isLogin" to="/login" id="login_register" style="color: white; margin-top: 10px">登录/注册</router-link>
+        <div style="color: white; margin-top: 10px" v-if="!$store.state.isLogin">
           <i class="el-icon-mobile-phone" style="font-size: 12px"></i>
           <span style="font-size: 12px">暂无绑定手机号</span>
         </div>
@@ -81,14 +81,20 @@
     name: "Profile",
     data() {
       return {
-        titleStatus: "未登录app",
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-        isLogin: false
+        role: '管理员'
       }
     },
     methods: {
       Login_Register() {
 
+      },
+      logOut() {
+        this.$store.state.isLogin = false;
+        this.$store.state.titleStatus = '未登录app';
+        this.$store.state.loginClientName = '';
+        this.$store.state.loginName = '';
+        this.$router.push('/logout');
       }
     }
   }

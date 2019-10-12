@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    background-color="#FFFAFA"
+    background-color="#fff"
     :default-active="this.$route.path"
     router
     active-text-color="#FF3030">
@@ -14,7 +14,7 @@
         <span>货物管理</span>
       </div>
     </el-menu-item>
-    <el-menu-item index="3">
+    <el-menu-item index="/category/retailerSearch">
       <div>
         <span>商家管理</span>
       </div>

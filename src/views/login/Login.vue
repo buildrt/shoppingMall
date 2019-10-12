@@ -7,13 +7,13 @@
 
     <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="80px" label-position="left">
       <el-form-item label="用户名：" prop="username">
-        <el-input v-model.trim="loginForm.username"></el-input>
+        <el-input id="uname" v-model.trim="loginForm.username"></el-input>
       </el-form-item>
       <el-form-item label="密码：" prop="password">
-        <el-input type="password" v-model.trim="loginForm.password" show-password autocomplete="off"></el-input>
+        <el-input id="pwd" type="password" v-model.trim="loginForm.password" show-password autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button round type="primary" disabled @click="LoginSub">登录</el-button>
+        <el-button round type="primary"  @click="LoginSub('loginForm')">登录</el-button>
       </el-form-item>
     </el-form>
     <router-link id="regLink" to="/register">快速注册</router-link>
@@ -28,16 +28,37 @@
 </template>
 
 <script>
+  import axios from "../../network/axios";
+  import {login} from "../../network/login";
 
   export default {
     name: "Login",
     methods: {
-      LoginSub() {
-
-      },
       Back() {
         this.$router.replace('/profile');
         console.log('back');
+      },
+      LoginSub(forName) {
+        this.$refs[forName].validate(valid => {
+          if (valid) {
+            console.log(valid);
+            this.username = document.getElementById('uname').value;
+            this.password = document.getElementById('pwd').value;
+            console.log(this.username, this.password);
+            login(this.username,this.password).then(res => {
+              alert("登录成功");
+              console.log(res);
+              this.$store.state.loginName = res.name;
+              this.$store.state.loginClientName = res.clientname;
+              this.$store.commit('TitleStatusChange');
+              this.$store.commit('IsLoginChange');
+              this.$router.push('/profile');
+            }).catch(err => {
+              alert("登录失败");
+              console.log(err);
+            });
+          }
+        })
       }
     },
     data() {
@@ -45,8 +66,6 @@
         loginForm: {
           username: '',
           password: '',
-          uname: 'Amazon',
-          pwd: '123456'
         },
         rules: {
           username: [

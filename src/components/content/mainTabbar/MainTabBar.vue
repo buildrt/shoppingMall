@@ -10,7 +10,7 @@
       <i class="el-icon-s-home"></i>
       <p>首页</p>
     </el-menu-item>
-    <el-menu-item index="/category">
+    <el-menu-item @click="JumpToCategory">
       <i class="el-icon-menu"></i>
       <p>分类</p>
     </el-menu-item>
@@ -28,7 +28,17 @@
 <script>
 
   export default {
-    name: "MainTabBar"
+    name: "MainTabBar",
+    methods: {
+      JumpToCategory() {
+        if (this.$store.state.isLogin === false) {
+          this.$router.push('/category');
+        }else {
+          alert("请登录后再查看");
+          this.$router.push('/login');
+        }
+      }
+    }
   }
 </script>
 

@@ -5,7 +5,8 @@ export default function axios(option) {
     // 1.创建axios的实例
     const instance = originAxios.create({
       baseURL: "http://127.0.0.1:7300/mock/5d95904072f59432c02dfbb3/mall",
-      timeout: 5000
+      // baseURL: "http://localhost:8080",
+      timeout: 15000
     });
 
     // 配置请求和响应拦截
@@ -20,19 +21,15 @@ export default function axios(option) {
     });
 
     instance.interceptors.response.use(response => {
-      return response.data
-    }, err => {
-      if (err && err.response) {
-        switch (err.response.status) {
-          case 400:
-            err.message = '请求错误';
-            break;
-          case 401:
-            err.message = '未授权的访问';
-            break;
-        }
+      if (response.status === 200) { // 文件类型特殊处理
+        return response.data;
       }
-      return err
+    }, err => {
+      Message({
+        message: '网络请求失败，请稍候再试',
+        type: 'error'
+      });
+      return Promise.reject(err)
     });
 
     // 2.传入对象进行网络请求
