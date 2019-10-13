@@ -23,7 +23,7 @@
         <span>账号管理</span>
       </div>
     </div>
-    <div id="menu">
+    <div id="menu" @click="$store.commit('Please')">
       <table cellpadding="0" cellspacing="0">
         <tr>
           <td>
@@ -45,7 +45,7 @@
         </tr>
       </table>
     </div>
-    <div id="content1">
+    <div id="content1" @click="$store.commit('Please')">
       <table cellpadding="0" cellspacing="0">
         <tr>
           <td width="10%"><i class="el-icon-chat-line-square" style="color:#1E90FF;"></i></td>
@@ -61,7 +61,7 @@
         </tr>
       </table>
     </div>
-    <div id="content2">
+    <div id="content2" @click="$store.commit('Please')">
       <table cellspacing="0" cellpadding="0">
         <tr>
           <td width="10%"><i class="el-icon-shopping-cart-1" style="color:#1E90FF;"></i></td>

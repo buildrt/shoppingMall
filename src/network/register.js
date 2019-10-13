@@ -1,14 +1,14 @@
 import axios from "./axios";
 
-export function register(clientName,name,passWord,phoneNumber) {
+export function register(clientname,name,password,phonenumber) {
   return axios({
     url: '/client/register',
     method: 'post',
     data: {
-      clientName,
-      passWord,
+      clientname,
+      password,
       name,
-      phoneNumber
+      phonenumber
     }
   })
 }

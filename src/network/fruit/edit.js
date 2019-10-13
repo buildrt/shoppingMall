@@ -1,11 +1,11 @@
 import axios from "../axios";
 
-export function edit(fruitName, locality, price) {
+export function edit(fruitname, locality, price) {
   return axios({
-    url: '',
+    url: '/commodities/insert',
     method: 'post',
     data: {
-      fruitName,
+      fruitname,
       locality,
       price
     }

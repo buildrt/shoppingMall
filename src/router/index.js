@@ -8,6 +8,8 @@ const FruitSearch = () => import('../views/category/fruitSearch/FruitSearch');
 const FruitInfoAdmin = () => import('../views/fruitInfoAdmin/FruitInfoAdmin');
 const RetailerSearch = () => import('../views/category/retailerSearch/RetailerSearch');
 const RetailerInfo = () => import('../views/retailerInfo/RetailerInfo');
+const ContractSearch = () => import('../views/category/contractSearch/ContractSearch');
+const ContractInfo = () => import('../views/contractInfo/ContractInfo');
 
 const Profile = () => import('../views/profile/Profile');
 
@@ -60,6 +62,10 @@ const routes= [
       {
         path: 'retailerSearch',
         component: RetailerSearch
+      },
+      {
+        path: 'contractSearch',
+        component: ContractSearch
       }
     ]
   },
@@ -78,6 +84,13 @@ const routes= [
     }
   },
   {
+    path: '/contractInfo',
+    component: ContractInfo,
+    meta: {
+      title: '采购合同界面'
+    }
+  },
+  {
     path: '/profile',
     component: Profile,
     meta: {
@@ -88,7 +101,7 @@ const routes= [
 
 const router = new Router({
   routes,
-  mode: 'history',
+  mode: 'hash',
 });
 
 router.beforeEach((to, from, next) => {

@@ -1,6 +1,6 @@
 <template>
   <div id="retailerSearch">
-    <el-form id="elform" :model="retailerForm" :rules="retailerRules" ref="retailerForm" label-position="left">
+    <el-form :model="retailerForm" :rules="retailerRules" ref="retailerForm" label-position="left">
       <el-form-item label="姓名" prop="name">
         <el-input name="name" v-model.trim="retailerForm.name"></el-input>
       </el-form-item>

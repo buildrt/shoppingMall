@@ -1,5 +1,5 @@
 <template>
-  <div id="homepage">
+  <div id="homepage" @click="$store.commit('Please')">
     <div id="title">
       <el-button id="back" circle icon="el-icon-arrow-left"></el-button>
       <p>水果生鲜</p>

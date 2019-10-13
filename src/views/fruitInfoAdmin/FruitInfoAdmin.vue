@@ -6,6 +6,10 @@
       <i id="more" @click="addDrawer = true" class="el-icon-more"></i>
     </div>
     <el-table
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
       :data="fruitData.slice((currpage-1)*pagesize,currpage*pagesize)"
       border
       id="fruitTable"
@@ -13,12 +17,13 @@
       height="73%">
       <el-table-column
         fixed
-        prop="fruitName"
+        prop="fruitname"
         width="80"
         label="名称">
       </el-table-column>
       <el-table-column
         width="50"
+        fixed
         prop="price"
         label="价格">
       </el-table-column>
@@ -29,7 +34,7 @@
       </el-table-column>
       <el-table-column
         width="180"
-        prop="createTime"
+        prop="createtime"
         label="创建日期">
       </el-table-column>
       <el-table-column label="操作" width="150">
@@ -74,6 +79,7 @@
 <script>
   import axios from "../../network/axios";
   import FruitForm from "./fruitForm/FruitForm";
+  import {deleteFruit} from "../../network/fruit/delete";
 
   export default {
     name: "FruitInfoAdmin",
@@ -84,25 +90,31 @@
       this.$store.commit('FruitShowChange');
     },
     mounted() {
-      this.getData();
+      setTimeout(()=> {
+        this.getData();
+      },1000);
+      // this.getData();
     },
     methods: {
       getData() {
         axios({
-          url: '/fruitData'
+          url: '/commodities/show'
         }).then(res => {
-          let fruitData = res.data;
+          console.log(res);
+          console.log(res.length);
+          let fruitData = res;
           let data = [];
           let len = fruitData.length;
           for (let i=0; i< len; i++){
             let obj = {};
-            obj.fruitName = fruitData[i].fruitName;
+            obj.fruitname = fruitData[i].fruitname;
             obj.price = fruitData[i].price;
             obj.locality = fruitData[i].locality;
-            obj.createTime = fruitData[i].createTime;
+            obj.createtime = fruitData[i].createtime;
             data[i] = obj;
           }
           this.fruitData = data;
+          this.loading = false;
         }).catch(err => {
           console.log("数据获取失败");
         })
@@ -111,11 +123,18 @@
         console.log(index, row);
       },
       handleDelete(index, row) {
-        console.log(index, row);
-        axios({
-          url: '',
-          method: 'post',
-          row
+        console.log("233"+index, row);
+        console.log("000"+row.fruitname);
+        deleteFruit(row.fruitname).then(res => {
+          console.log(res);
+          if (res === 1) {
+            alert("删除成功");
+            this.$router.go(0);
+          } else {
+            alert("删除失败");
+          }
+        }).catch(err => {
+          console.log("错误");
         });
         this.fruitData.splice(index,1);
       },
@@ -137,7 +156,8 @@
         drawer: false,  // 修改
         pagesize: 8,  // 每页的数据数
         currpage: 1,  // 默认开始页面
-        fruitData: []
+        fruitData: [],
+        loading: true
       }
     },
   }

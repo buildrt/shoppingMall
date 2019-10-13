@@ -6,19 +6,19 @@
     </div>
     <el-form :model="regForm" status-icon :rules="regRules" ref="regForm" label-width="100px" label-position="left">
       <el-form-item label="用户名：" prop="clientName">
-        <el-input v-model.trim="regForm.clientName"></el-input>
+        <el-input id="clientName" v-model.trim="regForm.clientName"></el-input>
       </el-form-item>
       <el-form-item label="密码：" prop="passWord">
-        <el-input v-model.trim="regForm.passWord" autocomplete="off"></el-input>
+        <el-input id="passWord" type="password" v-model.trim="regForm.passWord" show-password autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="确认密码：" prop="checkPass">
-        <el-input v-model.trim="regForm.checkPass" autocomplete="off"></el-input>
+        <el-input type="password" v-model.trim="regForm.checkPass" show-password autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="真实姓名：" prop="name">
-        <el-input v-model.trim="regForm.name" autocomplete="off"></el-input>
+        <el-input id="name" v-model.trim="regForm.name" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="手机号码：" prop="phoneNumber">
-        <el-input v-model.trim="regForm.phoneNumber" autocomplete="off"></el-input>
+        <el-input id="phoneNumber" v-model.trim="regForm.phoneNumber" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button round type="primary" @click="submitForm('regForm')">注册</el-button>
@@ -41,11 +41,13 @@
         this.$refs[forName].validate((valid) => {
           if (valid) {
             console.log(valid);
-            this.clientName = valid.clientName;
-            this.name = valid.name;
-            this.passWord = valid.passWord;
-            this.phoneNumber = valid.phoneNumber;
+            this.clientName = document.getElementById('clientName').value;
+            this.name = document.getElementById('name').value;
+            this.passWord = document.getElementById('passWord').value;
+            this.phoneNumber = document.getElementById('phoneNumber').value;
+            console.log(this.clientName, this.name, this.passWord, this.phoneNumber);
             register(this.clientName,this.name,this.passWord,this.phoneNumber).then(res => {
+              console.log(res);
               if (res === 1) {
                 alert("注册成功");
                 this.$router.push('/login');

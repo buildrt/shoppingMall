@@ -2,19 +2,19 @@
   <div id="fruitSearch">
     <el-form id="elform" :model="form" :rules="rules" ref="form" label-position="left">
       <el-form-item label="名称" prop="name">
-        <el-input name="name" v-model.trim="form.name"></el-input>
+        <el-input name="fruitName" id="fruitName" v-model.trim="form.fruitName"></el-input>
       </el-form-item>
       <el-form-item label="产地" prop="locality">
-        <el-input name="locality" v-model.trim="form.locality"></el-input>
+        <el-input name="locality" id="locality" v-model.trim="form.locality"></el-input>
       </el-form-item>
       <el-form-item label="最低价" prop="minPrice">
         <el-col :span="16">
-          <el-input name="minPrice" v-model.trim="form.minPrice" style="width: 100%;"></el-input>
+          <el-input name="minPrice" id="minPrice" v-model.trim="form.minPrice" style="width: 100%;"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="最高价" prop="maxPrice">
         <el-col :span="16">
-          <el-input name="maxPrice" v-model.trim="form.maxPrice" style="width: 100%;"></el-input>
+          <el-input name="maxPrice" id="maxPrice" v-model.trim="form.maxPrice" style="width: 100%;"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="起始日" prop="startTime">
@@ -28,7 +28,7 @@
         </el-col>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" id="search" @click="submitForm('form')">搜索</el-button>
+        <el-button type="primary" id="search" @click="submitForm()">搜索</el-button>
         <el-button id="reset" @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -40,14 +40,14 @@
   export default {
     name: "FruitSearch",
     methods: {
-      submitForm(forName) {
-        this.$refs[forName].validate((valid) => {
-          if(valid) {
-            console.log('success');
-          }else {
-            console.log('23333')
-          }
-        })
+      submitForm() {
+        this.fruitName = document.getElementById('fruitName').value;
+        this.locality = document.getElementById('locality').value;
+        this.minPrice = document.getElementById('minPrice').value;
+        this.maxPrice = document.getElementById('maxPrice').value;
+        this.startTime = document.getElementById('start').value;
+        this.endTime = document.getElementById('end').value;
+        console.log(this.fruitName, this.locality, this.minPrice, this.maxPrice, this.startTime,this.endTime);
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
@@ -100,6 +100,7 @@
 
           ],
           maxPrice: [
+            {required: false, trigger: 'blur' },
             {validator: checkPrice2, trigger: 'blur'}
           ],
           startTime: [

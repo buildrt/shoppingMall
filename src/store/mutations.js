@@ -7,5 +7,9 @@ export default {
   },
   IsLoginChange(state) {
     state.isLogin = !state.isLogin;
+  },
+  // 敬请期待
+  Please() {
+    alert("敬请期待");
   }
 }

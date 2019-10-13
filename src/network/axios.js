@@ -4,8 +4,8 @@ export default function axios(option) {
   return new Promise((resolve, reject) => {
     // 1.创建axios的实例
     const instance = originAxios.create({
-      baseURL: "http://127.0.0.1:7300/mock/5d95904072f59432c02dfbb3/mall",
-      // baseURL: "http://localhost:8080",
+      // baseURL: "http://127.0.0.1:7300/mock/5d95904072f59432c02dfbb3/mall",
+      baseURL: "http://localhost:8080",
       timeout: 15000
     });
 

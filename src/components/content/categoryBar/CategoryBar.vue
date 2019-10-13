@@ -19,7 +19,7 @@
         <span>商家管理</span>
       </div>
     </el-menu-item>
-    <el-menu-item index="4">
+    <el-menu-item index="/category/contractSearch">
       <div>
         <span>购销合同</span>
       </div>

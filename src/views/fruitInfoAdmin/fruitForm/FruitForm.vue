@@ -1,8 +1,10 @@
 <template>
   <div id="fruitForm">
-    <el-form id="editForm">
-      <el-form-item id="nameItem" :model="editForm" label="名称" prop="fruitName">
-        <el-input name="fruitName" id="name" v-model.trim="editForm.fruitName"></el-input>
+    <el-form
+      id="editForm"
+      :model="editForm">
+      <el-form-item id="nameItem" label="名称" prop="fruitName">
+        <el-input name="fruitname" id="name" v-model.trim="editForm.fruitname"></el-input>
       </el-form-item>
       <el-form-item id="locaItem" label="产地" prop="locality">
         <el-input name="locality" id="local" v-model.trim="editForm.locality"></el-input>
@@ -26,24 +28,24 @@
     name: "FruitForm",
     methods: {
       Confirm() {
-        this.fruitName = document.getElementById('name').value;
+        this.fruitname = document.getElementById('name').value;
         this.locality = document.getElementById('local').value;
         this.price = document.getElementById('price').value;
-        console.log(this.fruitName, this.locality, this.price);
-        edit(this.fruitName, this.locality, this.price).then(res => {
+        console.log(this.fruitname, this.locality, this.price);
+        edit(this.fruitname, this.locality, this.price).then(res => {
           if (res === 1) {
-            console.log("修改成功");
-            this.$router.replace('/fruitInfoAdmin');
+            alert("修改成功");
+            this.$router.go(0);
           }else {
-            console.log("修改失败");
+            alert("修改失败");
           }
         })
-      }
+      },
     },
     data() {
       return {
         editForm: {
-          fruitName: '',
+          fruitname: '',
           locality: '',
           price: '',
         },
