@@ -80,7 +80,11 @@
       RetailerForm
     },
     mounted() {
-      this.getRetailerData();
+      if (this.$store.state.retailerIsFull === true) {
+        this.getRetailerFullData();
+      }else {
+        this.getRetailerPartData();
+      }
     },
     data() {
       return {
@@ -91,7 +95,7 @@
       }
     },
     methods: {
-      getRetailerData() {
+      getRetailerFullData() {
         retailerOnload(this.currentpage,1).then(res => {
           console.log(res);
           let retailerData = res;
@@ -115,6 +119,9 @@
         }).catch(err => {
           console.log("数据库连接失败");
         })
+      },
+      getRetailerPartData() {
+        this.retailerData = this.$store.state.retailerSearchInfo;
       },
       handleEdit(index, row) {
         console.log(index, row);

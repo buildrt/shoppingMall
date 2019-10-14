@@ -1,12 +1,6 @@
 <template>
   <div id="fruitSearch">
     <el-form id="elform" :model="form" :rules="rules" ref="form" label-position="left">
-      <el-form-item label="名称" prop="name">
-        <el-input name="fruitName" id="fruitName" v-model.trim="form.fruitName"></el-input>
-      </el-form-item>
-      <el-form-item label="产地" prop="locality">
-        <el-input name="locality" id="locality" v-model.trim="form.locality"></el-input>
-      </el-form-item>
       <el-form-item label="最低价" prop="minPrice">
         <el-col :span="16">
           <el-input name="minPrice" id="minPrice" v-model.trim="form.minPrice" style="width: 100%;"></el-input>
@@ -28,7 +22,7 @@
         </el-col>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" id="search" @click="submitForm()">搜索</el-button>
+        <el-button type="primary" id="search" @click="submitForm('form')">搜索</el-button>
         <el-button id="reset" @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -37,22 +31,49 @@
 </template>
 
 <script>
+  import {fruitSearch} from "../../../network/fruit/search";
+
   export default {
     name: "FruitSearch",
     methods: {
-      submitForm() {
-        this.fruitName = document.getElementById('fruitName').value;
-        this.locality = document.getElementById('locality').value;
-        this.minPrice = document.getElementById('minPrice').value;
-        this.maxPrice = document.getElementById('maxPrice').value;
-        this.startTime = document.getElementById('start').value;
-        this.endTime = document.getElementById('end').value;
-        console.log(this.fruitName, this.locality, this.minPrice, this.maxPrice, this.startTime,this.endTime);
+      submitForm(forName) {
+        this.$refs[forName].validate(valid => {
+          console.log('rule'+valid);
+          if (valid) {
+            this.minPrice = document.getElementById('minPrice').value;
+            this.maxPrice = document.getElementById('maxPrice').value;
+            this.startTime = document.getElementById('start').value;
+            this.endTime = document.getElementById('end').value;
+            console.log(this.minPrice, this.maxPrice, this.startTime,this.endTime);
+            fruitSearch(this.minPrice, this.maxPrice, this.startTime,this.endTime).then(res => {
+              console.log(res);
+              let fruitData = res;
+              let data = [];
+              let len = fruitData.length;
+              for (let i=0; i< len; i++){
+                let obj = {};
+                obj.fruitname = fruitData[i].fruitname;
+                obj.price = fruitData[i].price;
+                obj.locality = fruitData[i].locality;
+                obj.createtime = fruitData[i].createtime;
+                data[i] = obj;
+              }
+              this.$store.state.fruitSearchInfo = [];
+              this.$store.state.fruitSearchInfo = data;
+              this.$store.state.fruitIsFull = false;
+              this.$router.push('/fruitInfoAdmin');
+            }).catch(err => {
+              alert("未查询到数据");
+              console.log("数据库连接失败");
+            })
+          }
+        })
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
       ToFruitInfoAdmin() {
+        this.$store.state.fruitIsFull = true;
         this.$router.push('/fruitInfoAdmin');
       }
     },
@@ -72,9 +93,23 @@
           callback();
         }
       };
+      let checkPrice = (rule, value, callback) => {
+        let min = parseFloat(value);
+        if(value === '' || isNaN(value)) {
+          callback(new Error('请输入正确的价格'));
+        }else {
+          callback();
+        }
+      };
       let checkPrice2 = (rule, value, callback) => {
-        if (value <= this.form.minPrice) {
-          callback(new Error('最高价需大于最低价'));
+        let min = parseFloat(document.getElementById('minPrice').value);
+        let max = parseFloat(value);
+        if(value === '' || isNaN(value)) {
+          callback(new Error('请输入正确的价格'));
+        }else if (document.getElementById('minPrice').value === '' ){
+          callback(new Error('请输入最低价'));
+        }else if(min >= max){
+          callback(new Error('最低价需小于最高价'));
         }else {
           callback();
         }
@@ -90,17 +125,10 @@
           endTime: ''
         },
         rules: {
-          name: [
-
-          ],
-          locality: [
-
-          ],
           minPrice: [
-
+            {validator: checkPrice, trigger: 'blur'}
           ],
           maxPrice: [
-            {required: false, trigger: 'blur' },
             {validator: checkPrice2, trigger: 'blur'}
           ],
           startTime: [
@@ -145,7 +173,7 @@
   }
   #fruitData {
     position: absolute;
-    bottom: 25%;
+    bottom: 45%;
     width: auto;
     left: 16%;
   }

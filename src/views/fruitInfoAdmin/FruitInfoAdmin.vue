@@ -90,13 +90,19 @@
       this.$store.commit('FruitShowChange');
     },
     mounted() {
-      setTimeout(()=> {
-        this.getData();
-      },1000);
-      // this.getData();
+      if (this.$store.state.fruitIsFull === true){
+        setTimeout(()=> {
+          this.getFullData();
+        },1000);
+        // this.getData();
+      } else {
+        setTimeout(() => {
+          this.getPartData();
+        },1000)
+      }
     },
     methods: {
-      getData() {
+      getFullData() {
         axios({
           url: '/commodities/show'
         }).then(res => {
@@ -119,6 +125,10 @@
           console.log("数据获取失败");
         })
       },
+      getPartData() {
+        this.fruitData = this.$store.state.fruitSearchInfo;
+        this.loading = false;
+      },
       handleEdit(index, row) {
         console.log(index, row);
       },
@@ -134,7 +144,7 @@
             alert("删除失败");
           }
         }).catch(err => {
-          console.log("错误");
+          console.log("错误", err);
         });
         this.fruitData.splice(index,1);
       },

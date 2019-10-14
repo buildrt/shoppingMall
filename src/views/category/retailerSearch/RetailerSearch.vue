@@ -2,16 +2,10 @@
   <div id="retailerSearch">
     <el-form :model="retailerForm" :rules="retailerRules" ref="retailerForm" label-position="left">
       <el-form-item label="姓名" prop="name">
-        <el-input name="name" v-model.trim="retailerForm.name"></el-input>
-      </el-form-item>
-      <el-form-item label="手机" prop="phoneNumber">
-        <el-input name="phoneNumber" v-model.trim="retailerForm.phoneNumber"></el-input>
-      </el-form-item>
-      <el-form-item label="地址" prop="address">
-        <el-input name="address" v-model.trim="retailerForm.address"></el-input>
+        <el-input name="name" id="name" v-model.trim="retailerForm.name"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" id="search" @click="">搜索</el-button>
+        <el-button type="primary" id="search" @click="searchForm('retailerForm')">搜索</el-button>
         <el-button id="reset" @click="resetForm('retailerForm')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -20,13 +14,46 @@
 </template>
 
 <script>
+  import {retailerSearch} from '../../../network/retailer/search'
   export default {
     name: "RetailerSearch",
     methods: {
+      searchForm(forName) {
+        this.$refs[forName].validate(valid => {
+          if (valid) {
+            this.name = document.getElementById('name').value;
+            retailerSearch(this.name).then(res => {
+              console.log(res);
+              let retailerData = res;
+              console.log(this.retailerData);
+              let data = [];
+              let len = retailerData.length;
+              for (let i=0; i< len; i++){
+                let obj = {};
+                obj.name = retailerData[i].name;
+                obj.phonenumber = retailerData[i].phonenumber;
+                obj.address = retailerData[i].address;
+                if (retailerData[i].state === 1){
+                  obj.state = "启用";
+                } else {
+                  obj.state = "未启用";
+                }
+                obj.createtime = retailerData[i].createtime;
+                data[i] = obj;
+              }
+              this.$store.state.retailerSearchInfo = [];
+              this.$store.state.retailerSearchInfo = data;
+              this.$store.state.retailerIsFull = false;
+              this.$router.push('/retailerInfo');
+            })
+          }
+        })
+      },
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
       ToRetailerInfo() {
+        this.$store.state.retailerIsFull = true;
         this.$router.push('/retailerInfo');
       }
     },
@@ -34,21 +61,9 @@
       return {
         retailerForm: {
           name: '',
-          phoneNumber: '',
-          address: '',
-          state: ''
         },
         retailerRules: {
           name: [
-
-          ],
-          phoneNumber: [
-
-          ],
-          address: [
-
-          ],
-          state: [
 
           ]
         }

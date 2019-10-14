@@ -3,7 +3,7 @@
     <div id="title">
       <el-button id="back" @click="BackToContractSearch" circle icon="el-icon-arrow-left"></el-button>
       <p>采购合同管理</p>
-      <i id="more" @click="" class="el-icon-more"></i>
+      <i id="more" @click="insertdrawer = true" class="el-icon-more"></i>
     </div>
     <el-table
       :data="contractData.slice((currpage-1)*pagesize,currpage*pagesize)"
@@ -13,25 +13,20 @@
       height="73%">
       <el-table-column
         fixed
-        prop=""
+        prop="barcode"
         width="70"
         label="合同号">
       </el-table-column>
       <el-table-column
         width="80"
         fixed
-        prop=""
+        prop="type"
         label="运输类型">
       </el-table-column>
       <el-table-column
-        width="120"
-        prop=""
-        label="零售商">
-      </el-table-column>
-      <el-table-column
-        width="80"
-        prop=""
-        label="商品">
+        width="100"
+        prop="retailerid"
+        label="零售商ID">
       </el-table-column>
       <el-table-column
         width="180"
@@ -61,20 +56,49 @@
             <!--direction="btt"-->
             <!--size="60%">-->
     <!--</el-drawer>-->
-    <!--<el-drawer-->
-            <!--title="请添加信息"-->
-            <!--:visible.sync="retailerAddDrawer"-->
-            <!--direction="btt"-->
-            <!--size="60%">-->
-      <!--<retailer-form></retailer-form>-->
-    <!--</el-drawer>-->
+    <el-drawer
+      title="请添加信息"
+      :visible.sync="insertdrawer"
+      direction="btt"
+      size="60%">
+      <contract-form></contract-form>
+    </el-drawer>
   </div>
 </template>
 
 <script>
+  import axios from "../../network/axios";
+  import {deleteContract} from "../../network/contract/delete";
+  import ContractForm from './contractForm/ContractForm'
+
   export default {
     name: "ContractInfo",
+    components: {
+      ContractForm
+    },
+    mounted() {
+      this.getContractData();
+    },
     methods: {
+      getContractData() {
+        axios({
+          url: '/contract/show'
+        }).then(res => {
+          console.log(res);
+          let contractData = res;
+          let data = [];
+          let len = contractData.length;
+          for (let i=0; i< len; i++){
+            let obj = {};
+            obj.barcode = contractData[i].barcode;
+            obj.type = contractData[i].type;
+            obj.retailerid = contractData[i].retailerid;
+            obj.createtime = contractData[i].createtime;
+            data[i] = obj;
+          }
+          this.contractData = data;
+        })
+      },
       BackToContractSearch() {
         this.$router.push('/category/contractSearch');
       },
@@ -86,12 +110,29 @@
         console.log(`当前页: ${val}`);
         this.currpage=val;
       },
+      handleDelete(index, row) {
+        console.log(index, row);
+        console.log(row.barcode);
+        deleteContract(row.barcode).then(res => {
+          console.log(res);
+          if (res === 1) {
+            alert("删除成功");
+            this.$router.go(0);
+          } else {
+            alert("删除失败");
+          }
+        }).catch(err => {
+          console.log("错误",err);
+        });
+        this.fruitData.splice(index,1);
+      },
     },
     data() {
       return {
         contractData: [],
         pagesize: 8,  // 每页的数据数
         currpage: 1,  // 默认开始页面
+        insertdrawer: false,
       }
     }
   }

@@ -16,6 +16,10 @@ const state = {
   loginClientName: '',  //登录昵称
   loginName: '',  //登录姓名
   // loginRole: '',  //登录角色
+  fruitSearchInfo: [], //水果模糊查询数据
+  fruitIsFull: true,
+  retailerSearchInfo: [],
+  retailerIsFull: true,
 };
 
 const store = new Vuex.Store({
